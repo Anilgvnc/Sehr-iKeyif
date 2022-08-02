@@ -59,8 +59,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
         if (title != "Your location") {
             mMap.addMarker(new MarkerOptions().position(userLocation).title(title));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
         }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
     }
 
     @Override
@@ -101,22 +101,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onLocationChanged(@NonNull Location location) {
                     centerMapOnLocation(location, "Your Location");
                 }
+
+                @Override
+                public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String s) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String s) {
+
+                }
             };
 
             if (Build.VERSION.SDK_INT < 23) {
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             }
-
             else{
                 if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0 , 0, locationListener);
@@ -130,9 +134,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else{
             Location placeLocation = new Location(LocationManager.GPS_PROVIDER);
-            placeLocation.setLatitude(MainActivity.locations.get(intent.getIntExtra("placeNumber", 0)).latitude);
-            placeLocation.setLongitude(MainActivity.locations.get(intent.getIntExtra("placeNumber", 0)).longitude);
-            centerMapOnLocation(placeLocation, MainActivity.places.get(intent.getIntExtra("placeNumber", 0)));
+            placeLocation.setLatitude(ListAddresses.locations.get(intent.getIntExtra("placeNumber", 0)).latitude);
+            placeLocation.setLongitude(ListAddresses.locations.get(intent.getIntExtra("placeNumber", 0)).longitude);
+
+            centerMapOnLocation(placeLocation, ListAddresses.places.get(intent.getIntExtra("placeNumber", 0)));
         }
     }
 
@@ -163,10 +168,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         mMap.addMarker(new MarkerOptions().position(latLng).title(address));
-        MainActivity.places.add(address);
-        MainActivity.locations.add(latLng);
+        ListAddresses.places.add(address);
+        ListAddresses.locations.add(latLng);
 
-        MainActivity.arrayAdapter.notifyDataSetChanged();
+        ListAddresses.arrayAdapter.notifyDataSetChanged();
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.adressgenerator", Context.MODE_PRIVATE);
 
@@ -175,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ArrayList<String> latitudes = new ArrayList<>();
             ArrayList<String> longitudes = new ArrayList<>();
 
-            for(LatLng coordinates : MainActivity.locations){
+            for(LatLng coordinates : ListAddresses.locations){
 
                 latitudes.add(Double.toString(coordinates.latitude));
                 longitudes.add(Double.toString(coordinates.longitude));
@@ -183,7 +188,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
 
-            sharedPreferences.edit().putString("places", ObjectSerializer.serialize(MainActivity.places)).apply();
+            sharedPreferences.edit().putString("places", ObjectSerializer.serialize(ListAddresses.places)).apply();
             sharedPreferences.edit().putString("latitudes", ObjectSerializer.serialize(latitudes)).apply();
             sharedPreferences.edit().putString("places", ObjectSerializer.serialize(longitudes)).apply();
 

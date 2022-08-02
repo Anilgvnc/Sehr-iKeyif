@@ -1,76 +1,49 @@
 package com.example.adressgenerator;
 
-import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.MenuItem;
 
-import com.google.android.gms.maps.model.LatLng;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.IOException;
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    static ArrayAdapter arrayAdapter;
-    static ArrayList<String> places = new ArrayList<>();
-    static ArrayList<LatLng> locations = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listView = (ListView) findViewById(R.id.adressList);
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.adressgenerator", Context.MODE_PRIVATE);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
-        ArrayList<String> latitudes = new ArrayList<>();
-        ArrayList<String> longitudes = new ArrayList<>();
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
-        places.clear();
-        latitudes.clear();
-        longitudes.clear();
-        locations.clear();
-
-
-        try {
-            places = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("places", ObjectSerializer.serialize(new ArrayList<String>())));
-            latitudes = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("latitudes", ObjectSerializer.serialize(new ArrayList<String>())));
-            longitudes = (ArrayList<String>) ObjectSerializer.deserialize(sharedPreferences.getString("longitudes", ObjectSerializer.serialize(new ArrayList<String>())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (places.size() > 0 && latitudes.size() > 0 && longitudes.size() > 0) {
-            if (places.size() == latitudes.size() && latitudes.size() == longitudes.size()) {
-                for (int i = 0; longitudes.size() > i; i++) {
-                    locations.add(new LatLng(Double.parseDouble(latitudes.get(i)), Double.parseDouble(longitudes.get(i))));
-                }
-            }
-        } else {
-            places.add("Add a new place");
-            locations.add(new LatLng(0, 0));
-        }
-
-        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, places);
-
-        listView.setAdapter(arrayAdapter);
-
-        listView.setOnClickListener(new AdapterView.OnItemClickListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intend = new Intent(getApplicationContext(), MapsActivity.class);
-                intend.putExtra("Place number", position);
-
-                startActivity(intend);
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.home:
+                        return true;
+                    case R.id.listAddresses:
+                        startActivity(new Intent(getApplicationContext(), ListAddresses.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.logInActivity:
+                        startActivity(new Intent(getApplicationContext(), logInActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return false;
             }
         });
 
-
     }
+
 }

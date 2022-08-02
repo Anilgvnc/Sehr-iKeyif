@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_main.xml" value="0.15715579710144928" />
-        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_maps.xml" value="0.15715579710144928" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout-w1240dp/activity_login.xml" value="0.1285140562248996" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout-w936dp/activity_login.xml" value="0.14856557377049182" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_list_addresses.xml" value="0.19701086956521738" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_log_in.xml" value="0.25" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_login.xml" value="0.19701086956521738" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/activity_maps.xml" value="0.33" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/layout/fragment_home.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/menu/bottom_menu.xml" value="0.25" />
+        <entry key="..\:/Users/guven/AndroidStudioProjects/AdressGenerator/app/src/main/res/menu/main_menu.xml" value="0.19895833333333332" />
       </map>
     </option>
   </component>
