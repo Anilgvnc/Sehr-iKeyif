@@ -148,54 +148,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String address = "";
 
         try {
-            List<Address> listAddress = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-            if(listAddress != null && listAddress.size() > 0){
-                if(listAddress.get(0).getThoroughfare() != null){
-                    if(listAddress.get(0).getSubThoroughfare() != null){
-                        address += listAddress.get(0).getSubThoroughfare();
+
+            List<Address> listAddresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+
+            if (listAddresses != null && listAddresses.size() > 0) {
+
+                if (listAddresses.get(0).getThoroughfare() != null) {
+
+                    if (listAddresses.get(0).getSubThoroughfare() != null) {
+
+                        address += listAddresses.get(0).getSubThoroughfare() + " ";
+
                     }
-                    address += listAddress.get(0).getThoroughfare();
+
+                    address += listAddresses.get(0).getThoroughfare();
+
                 }
 
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(address == ""){
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm yyyy/MM/dd");
-            address = simpleDateFormat.format(new Date());
+
+        if (address == "") {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
+
+            address = sdf.format(new Date());
+
         }
 
-
         mMap.addMarker(new MarkerOptions().position(latLng).title(address));
+
         ListAddresses.places.add(address);
         ListAddresses.locations.add(latLng);
 
         ListAddresses.arrayAdapter.notifyDataSetChanged();
-
-        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.adressgenerator", Context.MODE_PRIVATE);
-
-        try {
-
-            ArrayList<String> latitudes = new ArrayList<>();
-            ArrayList<String> longitudes = new ArrayList<>();
-
-            for(LatLng coordinates : ListAddresses.locations){
-
-                latitudes.add(Double.toString(coordinates.latitude));
-                longitudes.add(Double.toString(coordinates.longitude));
-
-            }
-
-
-            sharedPreferences.edit().putString("places", ObjectSerializer.serialize(ListAddresses.places)).apply();
-            sharedPreferences.edit().putString("latitudes", ObjectSerializer.serialize(latitudes)).apply();
-            sharedPreferences.edit().putString("places", ObjectSerializer.serialize(longitudes)).apply();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         Toast.makeText(this, "Location Saved", Toast.LENGTH_SHORT).show();
 

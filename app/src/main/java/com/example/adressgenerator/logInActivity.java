@@ -26,6 +26,7 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
     TextView changeLogInModeTextView;
     //Firebase account
     private FirebaseAuth mAuth;
+    private static final String TAG = "EmailPassword";
 
     @Override
     public void onClick(View v) {
@@ -49,7 +50,7 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
     public void logInButton(View view){
         EditText emailEditText = (EditText) findViewById(R.id.email);
         EditText passwordEditText = (EditText) findViewById(R.id.password);
-        String email =emailEditText.getText().toString();
+        String email = emailEditText.getText().toString();
         String password =passwordEditText.getText().toString();
 
         if (loginProgress == true) {
@@ -73,7 +74,6 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
 
         //bottom navigation bar
-
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setSelectedItemId(R.id.logInActivity);
@@ -114,12 +114,12 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Log.d("success", "createUserWithEmail:success");
+                    Log.d(TAG, "createUserWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
                 }
                 else{
-                    Log.w("fail", "Authentication failed", task.getException());
+                    Log.w(TAG, "Authentication failed", task.getException());
                     Toast.makeText(logInActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                     updateUI(null);
@@ -134,12 +134,12 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    Log.d("Success", "SignInWithEmail:success");
+                    Log.d(TAG, "SignInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
                     updateUI(user);
                 }
                 else{
-                    Log.d("Failed", "Authentication failed");
+                    Log.w(TAG, "Authentication failed");
                     Toast.makeText(logInActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                     updateUI(null);
                 }
@@ -155,17 +155,17 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // Email sent
                     }
                 });
-        // [END send_email_verification]
     }
 
 
     private void updateUI(FirebaseUser user) {
+        startActivity(new Intent(logInActivity.this, Account.class) );
     }
 
     private void reload() {
+        startActivity(new Intent(logInActivity.this, Account.class) );
     }
 
 }
