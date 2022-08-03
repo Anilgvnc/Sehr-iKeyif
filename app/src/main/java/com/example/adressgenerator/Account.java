@@ -40,6 +40,10 @@ public class Account extends AppCompatActivity {
         startActivity(new Intent(Account.this, logInActivity.class) );
     }
 
+    public void editProfileButton(View view) {
+        startActivity(new Intent(Account.this, EditAccount.class));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

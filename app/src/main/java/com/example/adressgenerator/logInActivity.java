@@ -25,6 +25,7 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
 
     boolean loginProgress = true;
     TextView changeLogInModeTextView;
+    EditText usernameEditText;
     //Firebase account
     private FirebaseAuth mAuth;
     private static final String TAG = "EmailPassword";
@@ -49,10 +50,8 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void logInButton(View view){
-        EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         EditText emailEditText = (EditText) findViewById(R.id.email);
         EditText passwordEditText = (EditText) findViewById(R.id.password);
-        String username = usernameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String password =passwordEditText.getText().toString();
 
@@ -61,7 +60,6 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
         }
         else{
             createAccount(email, password);
-            getUsername(username);
         }
     }
 
@@ -133,14 +131,6 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
-    public void getUsername(String username) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(username)
-                .build();
-
-    }
 
     public void signIn(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
