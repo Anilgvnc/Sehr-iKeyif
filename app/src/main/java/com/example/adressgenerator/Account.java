@@ -24,16 +24,29 @@ public class Account extends AppCompatActivity {
     static ArrayList<String> accountInfo;
     static ArrayAdapter<String> arrayAdapter;
     String name;
-    String email;
+    static String email;
     Uri photoUrl;
+
+    public void checkCurrentUser() {
+        // [START check_current_user]
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(Account.this, logInActivity.class) );
+        }
+    }
 
     public void signOutButton(View view) {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(Account.this, logInActivity.class) );
     }
 
-    public void getUserProfile() {
-        // [START get_user_profile]
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_account);
+
+        //account info
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url
@@ -50,14 +63,7 @@ public class Account extends AppCompatActivity {
             // FirebaseUser.getIdToken() instead.
             String uid = user.getUid();
         }
-        // [END get_user_profile]
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account);
-
+        //listView
         ListView listView = (ListView) findViewById(R.id.accountListView);
         accountInfo = new ArrayList<String>(asList("Name: " + name, "E-mail: " + email));
         arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, accountInfo);

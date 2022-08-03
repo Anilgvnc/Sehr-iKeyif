@@ -19,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class logInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,8 +49,10 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void logInButton(View view){
+        EditText usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         EditText emailEditText = (EditText) findViewById(R.id.email);
         EditText passwordEditText = (EditText) findViewById(R.id.password);
+        String username = usernameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String password =passwordEditText.getText().toString();
 
@@ -58,6 +61,7 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
         }
         else{
             createAccount(email, password);
+            getUsername(username);
         }
     }
 
@@ -129,6 +133,15 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
         });
     }
 
+    public void getUsername(String username) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build();
+
+    }
+
     public void signIn(String email, String password){
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -161,7 +174,11 @@ public class logInActivity extends AppCompatActivity implements View.OnClickList
 
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(logInActivity.this, Account.class) );
+        if(user == null){
+            Toast.makeText(this, "Please try again with your email and password.", Toast.LENGTH_SHORT).show();
+        }else {
+            startActivity(new Intent(logInActivity.this, Account.class));
+        }
     }
 
     private void reload() {
