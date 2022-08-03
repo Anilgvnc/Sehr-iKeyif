@@ -34,10 +34,10 @@ public class ListAddresses extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.adressList);
 
-
-        places.add("Add a new place");
-        locations.add(new LatLng(0, 0));
-
+        if (places.size() == 0) {
+            places.add("Add a new place");
+            locations.add(new LatLng(0, 0));
+        }
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, places);
 
